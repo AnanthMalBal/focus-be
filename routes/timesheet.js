@@ -342,7 +342,7 @@ router.get('/getProjectList', function (req, res) {
 router.delete('/deleteUserDailyLog',function(req,res){
     try{
         console.log("Welcom to  deleteUserDailyLog ");
-        cmd='DELETE from usersdailylog where timesheetId="'+req.body.timesheetId+'"';
+        cmd='DELETE from usersdailylog where autoId="'+req.body.autoId+'"';;
         console.log(cmd);
         let data = [true, 1];
         con.query(cmd, data, function (error, result) {
@@ -406,7 +406,7 @@ router.post('/updateUserTimesheet', function (req, res) {
 router.get('/getUsersDailyLog', function (req, res) {
     try {
         console.log("Welcome to getUsersDailyLog")
-        cmd = 'select projectId ,processId ,billType,actualTime from usersdailylog where timesheetId="'+req.query.timesheetId+'"';
+        cmd = 'select * from usersdailylog where timesheetId="'+req.query.timesheetId+'"';
         console.log(cmd);
         con.query(cmd, function (err, result) {
             if (err) {

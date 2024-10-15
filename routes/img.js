@@ -2,6 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const con = require('../dbconfig');
 const moment = require('moment');
+const fs = require('fs');
 
 var express = require('express');
 var router = express.Router();
@@ -59,8 +60,37 @@ const storage = multer.diskStorage({
   router.post('/createmediaimage', upload.single('images'), createimage)
   
   //**** End  */
-    
+
   
-  
+  router.get('/getimage', function (req, res) {
+  try{
+  var getresisterQ = 'SELECT mediaUrl FROM tix_media WHERE mediaId="' + req.query.mediaId+'"';
+  console.log(getresisterQ);
+  con.query(getresisterQ, function (error, result) {
+    if (error) {
+      console.log(error);
+      res.send("Unable to get data");
+    }
+    else {
+      console.log("userimage", result);
+      const imagefile = fs.readFileSync('C:/images/' + result[0].mediaUrl);
+      const bl = Buffer.from(imagefile, 'base64');
+
+      res.send(bl);
+      // res.send({ "FileName1": result[0].imageUrl, "file": bl });
+
+    }
+  });
+}
+catch (e) {
+  console.log("Catch");
+  const statusCode = e.statusCoderes || 500;
+  res.status(statusCode, "Error").json({ success: 0, message: e.message, status: statusCode });
+}
+
+});
+//****End  */
+// //end getid proof
+
   
   module.exports = router;
